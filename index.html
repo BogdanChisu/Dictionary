@@ -32,11 +32,9 @@
 			var word_list = [];
 			function addWord(){
 				var input_word = (document.getElementById("word-place").value).toLowerCase();
-				if (input_word.length > 0) {
-					if (findWord(input_word) === true) {
-						word_list.push(input_word);
-						buildList(word_list);
-					}
+				if ((input_word.length > 0) && (word_list.includes(input_word) === false)) {
+					word_list.push(input_word);
+					buildList(word_list);
 				}
 				document.getElementById("word-place").value = "";
 				return false;
@@ -44,54 +42,28 @@
 
 			function searchWord() {
 				let search_word = document.getElementById("search_str").value;
-				if (findWord(search_word) === true) {
+				if (word_list.includes(search_word) === false) {
 					document.getElementById("search_str").value = "Element not found in the list";
-					setTimeout(removeText, 3000);
+					setTimeout(removeText, 5000);
 				} else {
 					document.getElementById("search_str").value = "Element in the list";
 					document.getElementById(search_word).style.color = "red";
-					setTimeout(removeText, 3000);
+					setTimeout(removeText, 5000);
 				}
 				return false;
 			}
-
-			function findWord(word) {
-				for (let element of word_list) {
-					if (element === word) {
-						return false;
-						break;
-					}
-				}
-				return true;
-			}
-
 
 			function removeText() {
 				document.getElementById("search_str").value = "";
 			}
 
 			function buildList() {
-				sortList();
+				word_list.sort();
 				document.getElementById('word_list').innerHTML = "";
 				for (let word of word_list) {
 					document.getElementById('word_list').innerHTML += `
 					<li class="list-group-item" id="` + word + `">` + word + `</li>
 					`;
-				}
-			}
-
-			function sortList() {
-				var sorted = false;
-				while (sorted == false) {
-					sorted = true;
-					for (let i = 0; i < word_list.length - 1; i++) {
-						if (word_list[i].localeCompare(word_list[i + 1]) > 0) {
-							sorted = false;
-							let aux = word_list[i];
-							word_list[i] = word_list[i + 1];
-							word_list[i + 1] = aux;
-						}
-					}
 				}
 			}
 		</script>
